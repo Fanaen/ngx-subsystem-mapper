@@ -32,6 +32,10 @@ export class MapDisplayComponent implements AfterViewInit {
         this.update();
     }
 
+    public onClick(event: any) {
+        this.searchPathForSubsystem(event.path);
+    }
+
     private update() {
         if (this.isReady && this.svgContainer) {
             this.svgElement = this.svgContainer.nativeElement.querySelector('svg');
@@ -44,6 +48,21 @@ export class MapDisplayComponent implements AfterViewInit {
                     contain: true,
                     controlIconsEnabled: true,
                 });
+            }
+        }
+    }
+
+    private searchPathForSubsystem(path: HTMLElement[]) {
+        for (const el of path) {
+            const id = el.id;
+            if (!id) {
+                // Ignore this
+            } else if (id.startsWith("system_")) {
+                console.log(`Found system '${id.substr(7)}'`);
+                return;
+            } else if (id.startsWith("subsystem_")) {
+                console.log(`Found subsystem '${id.substr(10)}'`);
+                return;
             }
         }
     }
