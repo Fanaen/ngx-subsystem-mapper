@@ -2,9 +2,33 @@
 
 $stroke-width: 0.5px;
 $hover-color: #115080;
-$selected-color: #804111;
+$selected-color: #b4491b;
+
+.cluster {
+    // System rect
+    polygon {
+        stroke-width: $stroke-width;
+        stroke: #dddddd;
+
+        fill-opacity: 0.1;
+    }
+
+    &.selected polygon {
+        stroke: $selected-color;
+    }
+
+    // System name
+    text {
+        transition: fill 0.2s ease;
+    }
+
+    &:hover > text {
+        fill: $hover-color;
+    }
+}
 
 .node {
+    // Subsystem rect
     polygon {
         stroke-width: $stroke-width;
     }
@@ -13,21 +37,12 @@ $selected-color: #804111;
         stroke: $selected-color;
     }
 
-    &:hover polygon {
-        stroke: $hover-color;
-    }
-}
-
-.cluster {
-    polygon {
-        stroke-width: $stroke-width;
-        stroke: #dddddd;
-
-        fill-opacity: 0.1;
+    // Subsystem name
+    text {
+        transition: fill 0.1s ease;
     }
 
-    &:hover > polygon {
-        stroke-dasharray: none;
-        stroke-width: $stroke-width * 2;
+    &:hover text {
+        fill: $hover-color;
     }
 }
