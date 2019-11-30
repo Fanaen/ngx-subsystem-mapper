@@ -33,17 +33,17 @@ export class SelectorService {
         this.selectedSubject.next(selection);
     }
 
-    public selectSystem(system: System) {
+    public selectSystem(id: string) {
         this.selectedSubject.next({
             type: ObjectType.System,
-            id: system.id,
+            id: id,
         });
     }
 
-    public selectSubsystem(subsystem: Subsystem) {
+    public selectSubsystem(id: string) {
         this.selectedSubject.next({
             type: ObjectType.Subsystem,
-            id: subsystem.id,
+            id: id,
         });
     }
 

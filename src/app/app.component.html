@@ -16,12 +16,10 @@
 
 <div class="content row fill">
     <div class="col-md-9">
-        <app-map-display [svg]="svg"></app-map-display>
+        <app-map-display></app-map-display>
     </div>
     <div class="col-md-3 sidebar">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item" *ngFor="let subsystem of graph.subsystems">{{ subsystem.name }}</li>
-        </ul>
+        <app-inspector></app-inspector>
     </div>
 </div>
 

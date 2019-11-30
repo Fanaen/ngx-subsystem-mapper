@@ -3,11 +3,13 @@ body, html, .container-fluid, .sidebar, .content {
     min-height: 100%;
     margin:0;
 }
+
 .content {
     box-sizing: border-box;
     padding-top: 50px;
     z-index:1;
 }
+
 .navbar {
     height: 50px;
     position: absolute;
@@ -19,7 +21,7 @@ body, html, .container-fluid, .sidebar, .content {
 }
 
 .sidebar {
-    // background-color: #f7f9fa;
+    background-color: #f7fafa;
     border-left: 1px solid #e4e4e4;
     padding: 0;
 }

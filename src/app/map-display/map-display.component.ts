@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import * as SvgPanZoom from "svg-pan-zoom";
 import { ObjectType, SelectionReference, SelectorService } from '../selector.service';
+import { GraphUpdaterService } from '../graph-updater.service';
 
 /// We want the <svg> to take all the space available.
 const SVGElementStyle = 'width:100%;height:100%;position:absolute;top:0;left:0;bottom:0;right:0;';
@@ -19,15 +20,6 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
     lastSelection: SelectionReference;
     isReady = false;
 
-    @Input()
-    public set svg(value: string) {
-        // Replace the container content with the new SVG
-        this.svgContainer.nativeElement.innerHTML = value;
-
-        // Init svg-pan-zoom. There is a safety to avoid svg-pan-zoom to be loaded before the UI.
-        this.update();
-    }
-
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {
         if (this.svgPanZoom) {
@@ -35,9 +27,19 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
         }
     }
 
-    constructor(private selector: SelectorService) {}
+    constructor(private graphUpdater: GraphUpdaterService, private selector: SelectorService) {}
 
     ngOnInit(): void {
+        // Get the data from the server
+        this.graphUpdater.svg.subscribe(svg => {
+            // Replace the container content with the new SVG
+            this.svgContainer.nativeElement.innerHTML = svg;
+
+            // Init svg-pan-zoom. There is a safety to avoid svg-pan-zoom to be loaded before the UI.
+            this.update();
+        });
+
+        // Observe the selection
         this.selector.selected.subscribe(selected => {
             // Disable the last selection
             if (this.lastSelection) {

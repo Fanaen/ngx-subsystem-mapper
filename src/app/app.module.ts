@@ -5,11 +5,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapDisplayComponent } from './map-display/map-display.component';
+import { InspectorComponent } from './inspector/inspector.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        MapDisplayComponent
+        MapDisplayComponent,
+        InspectorComponent
     ],
     imports: [
         BrowserModule,
