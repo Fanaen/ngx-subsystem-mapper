@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import * as SvgPanZoom from "svg-pan-zoom";
 
 /// We want the <svg> to take all the space available.
@@ -14,6 +14,9 @@ export class MapDisplayComponent implements AfterViewInit {
     @ViewChild('svgContainer', { static: true })
     svgContainer: ElementRef;
     svgElement: SVGSVGElement;
+
+    svgPanZoom: SvgPanZoom.Instance;
+
     isReady = false;
 
     @Input()
@@ -25,6 +28,13 @@ export class MapDisplayComponent implements AfterViewInit {
         this.update();
     }
 
+    @HostListener('window:resize', ['$event'])
+    onResize(event: any) {
+        if (this.svgPanZoom) {
+            this.svgPanZoom.resize();
+        }
+    }
+
     public ngAfterViewInit() {
         this.isReady = true;
 
@@ -33,7 +43,7 @@ export class MapDisplayComponent implements AfterViewInit {
     }
 
     public onClick(event: any) {
-        this.searchPathForSubsystem(event.path);
+        MapDisplayComponent.searchPathForSubsystem(event.path);
     }
 
     private update() {
@@ -44,7 +54,7 @@ export class MapDisplayComponent implements AfterViewInit {
             if (this.svgElement) {
                 /// We want the <svg> to take all the space available.
                 this.svgElement.setAttribute('style', SVGElementStyle);
-                let svgPanZoom: SvgPanZoom.Instance = SvgPanZoom(this.svgElement, {
+                this.svgPanZoom = SvgPanZoom(this.svgElement, {
                     contain: true,
                     controlIconsEnabled: true,
                 });
@@ -52,7 +62,7 @@ export class MapDisplayComponent implements AfterViewInit {
         }
     }
 
-    private searchPathForSubsystem(path: HTMLElement[]) {
+    private static searchPathForSubsystem(path: HTMLElement[]) {
         for (const el of path) {
             const id = el.id;
             if (!id) {
