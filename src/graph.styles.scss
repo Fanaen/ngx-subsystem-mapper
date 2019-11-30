@@ -1,0 +1,33 @@
+// The style of the svg graph
+
+$stroke-width: 0.5px;
+$hover-color: #115080;
+$selected-color: #804111;
+
+.node {
+    polygon {
+        stroke-width: $stroke-width;
+    }
+
+    &.selected polygon {
+        stroke: $selected-color;
+    }
+
+    &:hover polygon {
+        stroke: $hover-color;
+    }
+}
+
+.cluster {
+    polygon {
+        stroke-width: $stroke-width;
+        stroke: #dddddd;
+
+        fill-opacity: 0.1;
+    }
+
+    &:hover > polygon {
+        stroke-dasharray: none;
+        stroke-width: $stroke-width * 2;
+    }
+}
