@@ -1,25 +1,28 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Subsystem mapper</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <a class="navbar-brand" href="#">Subsystem mapper</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Map <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-  </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Map <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 <div class="row fill">
-  <div class="col-md-9">
-
-  </div>
-  <div class="col-md-3 sidebar">
-
-  </div>
+    <div class="col-md-9">
+        <img src="http://localhost:4300/graph/svg" alt="">
+    </div>
+    <div class="col-md-3 sidebar">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let subsystem of graph.subsystems">{{ subsystem.name }}</li>
+        </ul>
+    </div>
 </div>
 
 <router-outlet></router-outlet>
