@@ -2,3 +2,7 @@
 $stroke-width: 0.5px;
 $hover-color: #0080c7;
 $selected-color: #eb5c00;
+
+$theme-colors: (
+    "primary": $selected-color
+);
