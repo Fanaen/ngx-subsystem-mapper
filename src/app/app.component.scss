@@ -1,3 +1,5 @@
+@import "../variables";
+
 body, html, .container-fluid, .sidebar, .content {
     height: 100%;
     min-height: 100%;
@@ -13,8 +15,39 @@ body, html, .container-fluid, .sidebar, .content {
     background-color: white;
     padding: 0;
 
+    // Use full height
+    display: flex;
+    flex-direction: column;
+
     $box-shadow: -20px 0 20px 0 #f7f7f7;
     -moz-box-shadow: $box-shadow;
     -webkit-box-shadow: $box-shadow;
     box-shadow: $box-shadow;
+}
+
+.scroll-view {
+    flex-grow: 1;
+    overflow-y: auto;
+
+    // Use push the footer at the bottom
+    display: flex;
+    flex-direction: column;
+
+    app-inspector {
+        flex-grow: 1;
+    }
+}
+
+.search {
+    padding: 20px;
+    background-color: $selected-color;
+    //border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+    text-align: center;
+    font-size: 80%;
+    color: #848484;
+
+    padding: 10px 0 20px;
 }

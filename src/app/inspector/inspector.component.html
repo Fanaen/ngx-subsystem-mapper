@@ -1,16 +1,13 @@
-<div class="search">
-    <form>
-        <input type="text" class="form-control" id="search" placeholder="[Unimplemented] Search for a subsystem...">
-    </form>
-</div>
 <div class="inspector">
     <nav aria-label="breadcrumb" *ngIf="selectedSystem || selectedSubsystem">
-        <ol class="breadcrumb">
-            <li [class]="'breadcrumb-item ' + (i+1 == breadcrumb.length ? 'active' : '')" aria-current="page"
-                *ngFor="let item of breadcrumb; let i = index"
-                (click)="select(item)">
-                {{ item.name }}</li>
-        </ol>
+        <div class="custom-breadcrumb">
+            <span class="custom-breadcrumb-item" aria-current="page"
+                *ngFor="let item of breadcrumb; let i = index">
+                <button type="button"
+                        [class]="'btn btn-sm btn-link ' + (i+1 == breadcrumb.length ? 'disabled' : '')"
+                        (click)="select(item)">{{ item.name }}</button>
+            </span>
+        </div>
     </nav>
     <div *ngIf="selectedSystem">
         <div>
@@ -18,10 +15,11 @@
                 <span class="badge badge-pill badge-light">System</span>
             </span>
             <h2>{{selectedSystem.name}}</h2>
-            <div class="id-display">
-                <span class="label">Id:</span>&nbsp;<span class="id">{{selectedSystem.id}}</span>
+            <div class="metadata-display">
+                <span class="label">Id:</span>&nbsp;<span class="value">{{selectedSystem.id}}</span><br>
+                <span class="label">Repo:</span>&nbsp;<span class="value">{{selectedSystem.repo_name}}</span><br>
+                <span class="label">Path:</span>&nbsp;<span class="value">{{selectedSystem.path}}</span>
             </div>
-
             <p>{{selectedSystem.description}}</p>
 
             <div *ngIf="selectedSystemSystems.length > 0">
@@ -57,8 +55,10 @@
             <span class="badge badge-pill badge-primary">Subsystem</span>
         </span>
         <h2>{{selectedSubsystem.name}}</h2>
-        <div class="id-display">
-            <span class="label">Id:</span>&nbsp;<span class="id">{{selectedSubsystem.id}}</span>
+        <div class="metadata-display">
+            <span class="label">Id:</span>&nbsp;<span class="value">{{selectedSubsystem.id}}</span><br>
+            <span class="label">Repo:</span>&nbsp;<span class="value">{{selectedSubsystem.repo_name}}</span><br>
+            <span class="label">Path:</span>&nbsp;<span class="value">{{selectedSubsystem.path}}</span>
         </div>
         <p>{{selectedSubsystem.description}}</p>
 

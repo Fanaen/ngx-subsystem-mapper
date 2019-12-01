@@ -1,8 +1,5 @@
 // The style of the svg graph
-
-$stroke-width: 0.5px;
-$hover-color: #0080c7;
-$selected-color: #eb5c00;
+@import "variables";
 
 #graph0 > polygon {
     fill: transparent;

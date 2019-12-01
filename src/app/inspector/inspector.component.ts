@@ -126,12 +126,10 @@ export class InspectorComponent implements OnInit {
         // Go upwards until the root
         while (parent) {
             const parentSystem = this.graph.systems[parent.index];
-            console.log(breadcrumb);
             breadcrumb.splice(0, 0, { type: ObjectType.System, id: parent.id, name: parentSystem.name });
             parent = parentSystem.parent_system;
         }
 
-        console.log(breadcrumb);
         this.breadcrumb = breadcrumb;
     }
 }

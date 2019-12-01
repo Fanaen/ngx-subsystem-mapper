@@ -3,7 +3,18 @@
         <app-map-display></app-map-display>
     </div>
     <div class="col-md-4 sidebar">
-        <app-inspector></app-inspector>
+        <div class="search">
+            <form>
+                <input type="text" class="form-control" id="search" placeholder="[Unimplemented] Search for a subsystem...">
+            </form>
+        </div>
+        <div class="scroll-view">
+            <app-inspector></app-inspector>
+            <div class="footer">
+                Made with <a href="https://github.com/Fanaen/subsystem-mapper">Subsystem mapper</a>
+            </div>
+        </div>
+
     </div>
 </div>
 
