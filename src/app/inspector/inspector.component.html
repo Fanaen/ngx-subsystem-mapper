@@ -1,27 +1,43 @@
+<div class="search">
+    <form>
+        <input type="text" class="form-control" id="search" placeholder="Search for a subsystem...">
+    </form>
+</div>
 <div class="inspector">
-    <div class="card" *ngIf="selectedSystem">
-        <div class="card-body">
-            <h5 class="card-title">{{selectedSystem.name}}</h5>
-            <p class="card-text">{{selectedSystem.description}}</p>
+    <div *ngIf="selectedSystem">
+        <div>
+            <span class="badges">
+                <span class="badge badge-pill badge-light">System</span>
+            </span>
+            <h3>{{selectedSystem.name}}</h3>
+            <div class="id-display">
+                <span class="label">Id:</span>&nbsp;<span class="id">{{selectedSystem.id}}</span>
+            </div>
+
+            <p>{{selectedSystem.description}}</p>
         </div>
     </div>
 
-    <div class="card" *ngIf="selectedSubsystem">
-        <div class="card-body">
-            <h5 class="card-title">{{selectedSubsystem.name}}</h5>
-            <p class="card-text">{{selectedSubsystem.description}}</p>
+    <div *ngIf="selectedSubsystem">
+        <span class="badges">
+            <span class="badge badge-pill badge-primary">Subsystem</span>
+        </span>
+        <h3>{{selectedSubsystem.name}}</h3>
+        <div class="id-display">
+            <span class="label">Id:</span>&nbsp;<span class="id">{{selectedSubsystem.id}}</span>
+        </div>
+        <p>{{selectedSubsystem.description}}</p>
 
-            <div *ngIf="selectedSubsystem.dependencies.length > 0">
-                <br>
-                <h6 class="card-subtitle">It requires :</h6>
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action"
-                       *ngFor="let dep of selectedSubsystem.dependencies"
-                       (click)="selectSubsystem(dep.subsystem.id)">
-                        <h5 class="mb-1">{{ getSubsystem(dep.subsystem).name }}</h5>
-                        <p class="mb-1" *ngIf="dep.why"><strong>Why?</strong> {{ dep.why }}</p>
-                    </a>
-                </div>
+        <div *ngIf="selectedSubsystem.dependencies.length > 0">
+            <br>
+            <h6>It requires :</h6>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action"
+                   *ngFor="let dep of selectedSubsystem.dependencies"
+                   (click)="selectSubsystem(dep.subsystem.id)">
+                    <h5 class="mb-1">{{ getSubsystem(dep.subsystem).name }}</h5>
+                    <p class="mb-1" *ngIf="dep.why"><strong>Why?</strong> {{ dep.why }}</p>
+                </a>
             </div>
         </div>
     </div>

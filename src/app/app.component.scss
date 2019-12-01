@@ -5,23 +5,16 @@ body, html, .container-fluid, .sidebar, .content {
 }
 
 .content {
-    box-sizing: border-box;
-    padding-top: 50px;
+    background-color: #FAFAFA;
     z-index:1;
 }
 
-.navbar {
-    height: 50px;
-    position: absolute;
-    top: 0;
-    left:0;
-    width:100%;
-    background:green;
-    z-index:2;
-}
-
 .sidebar {
-    background-color: #f7fafa;
-    border-left: 1px solid #e4e4e4;
+    background-color: white;
     padding: 0;
+
+    $box-shadow: -20px 0 20px 0 #f7f7f7;
+    -moz-box-shadow: $box-shadow;
+    -webkit-box-shadow: $box-shadow;
+    box-shadow: $box-shadow;
 }
