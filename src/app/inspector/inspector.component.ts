@@ -3,6 +3,11 @@ import { ObjectType, SelectionReference, SelectorService } from '../selector.ser
 import { Graph, ReferenceByIndex, Subsystem, System } from '../../models';
 import { GraphUpdaterService } from '../graph-updater.service';
 
+interface BreadcrumbItem extends SelectionReference {
+    name: String;
+    last?: boolean;
+}
+
 @Component({
     selector: 'app-inspector',
     templateUrl: './inspector.component.html',
@@ -22,6 +27,9 @@ export class InspectorComponent implements OnInit {
     public selectedSystemSubsystems: System[];
     // 2. for the current subsystem
     public selectedSubsystem: Subsystem;
+    // 3. for both
+    private selected: SelectionReference;
+    public breadcrumb: BreadcrumbItem[];
 
     constructor(private graphUpdater: GraphUpdaterService, private selector: SelectorService) {
     }
@@ -30,9 +38,12 @@ export class InspectorComponent implements OnInit {
         this.graphUpdater.graph.subscribe(graph => this.graph = graph);
 
         this.selector.selected.subscribe(selected => {
+            this.selected = selected;
             if (!selected) {
                 this.selectedSystem = null;
                 this.selectedSubsystem = null;
+                this.selectedSystemSystems = null;
+                this.selectedSystemSubsystems = null;
             } else {
                 // Analyse the selection
                 switch (selected.type) {
@@ -51,18 +62,24 @@ export class InspectorComponent implements OnInit {
                         break;
                 }
             }
+
+            this.updateBreadcrumb()
         });
     }
 
     public selectSubsystem(id: string) {
-        this.selector.selectSubsystem(id)
+        this.selector.selectSubsystem(id);
     }
 
     public selectSystem(id: string) {
-        this.selector.selectSystem(id)
+        this.selector.selectSystem(id);
     }
 
-    getSubsystem(subsystem: ReferenceByIndex<Subsystem>): Subsystem {
+    public select(selection: SelectionReference) {
+        this.selector.select(selection);
+    }
+
+    getSubsystem(subsystem: ReferenceByIndex): Subsystem {
         return this.graph.subsystems[subsystem.index];
     }
 
@@ -92,5 +109,29 @@ export class InspectorComponent implements OnInit {
             }
         }
         return { system: null, index: -1 };
+    }
+
+    private updateBreadcrumb() {
+        if (!this.selectedSystem && !this.selectedSubsystem) {
+            this.breadcrumb = [];
+            return;
+        }
+
+        let breadcrumb: BreadcrumbItem[] = this.selectedSubsystem
+            ? [{ ...this.selected, name: this.selectedSubsystem.name }]
+            : [{ ...this.selected, name: this.selectedSystem.name }];
+
+        let parent: ReferenceByIndex =  this.selectedSubsystem ? this.selectedSubsystem.parent_system : this.selectedSystem.parent_system;
+
+        // Go upwards until the root
+        while (parent) {
+            const parentSystem = this.graph.systems[parent.index];
+            console.log(breadcrumb);
+            breadcrumb.splice(0, 0, { type: ObjectType.System, id: parent.id, name: parentSystem.name });
+            parent = parentSystem.parent_system;
+        }
+
+        console.log(breadcrumb);
+        this.breadcrumb = breadcrumb;
     }
 }

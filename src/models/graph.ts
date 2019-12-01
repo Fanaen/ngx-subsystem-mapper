@@ -1,4 +1,4 @@
-export interface ReferenceByIndex<T> {
+export interface ReferenceByIndex {
     id: string,
     index: number,
 }
@@ -10,7 +10,7 @@ export interface System {
     path: string,
     description?: string,
 
-    parent_system?: ReferenceByIndex<System>,
+    parent_system?: ReferenceByIndex, // <System>
 }
 
 export interface Subsystem {
@@ -20,13 +20,13 @@ export interface Subsystem {
     path: string,
     description?: string,
 
-    parent_system?: ReferenceByIndex<System>,
+    parent_system?: ReferenceByIndex, // <System>
 
     dependencies: SubsystemDependency[],
 }
 
 export interface SubsystemDependency {
-    subsystem: ReferenceByIndex<Subsystem>,
+    subsystem: ReferenceByIndex, // <Subsystem>
     why?: string,
 }
 

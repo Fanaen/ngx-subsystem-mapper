@@ -4,6 +4,14 @@
     </form>
 </div>
 <div class="inspector">
+    <nav aria-label="breadcrumb" *ngIf="selectedSystem || selectedSubsystem">
+        <ol class="breadcrumb">
+            <li [class]="'breadcrumb-item ' + (i+1 == breadcrumb.length ? 'active' : '')" aria-current="page"
+                *ngFor="let item of breadcrumb; let i = index"
+                (click)="select(item)">
+                {{ item.name }}</li>
+        </ol>
+    </nav>
     <div *ngIf="selectedSystem">
         <div>
             <span class="badges">
