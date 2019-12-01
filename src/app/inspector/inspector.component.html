@@ -1,6 +1,6 @@
 <div class="search">
     <form>
-        <input type="text" class="form-control" id="search" placeholder="Search for a subsystem...">
+        <input type="text" class="form-control" id="search" placeholder="[Unimplemented] Search for a subsystem...">
     </form>
 </div>
 <div class="inspector">
@@ -9,12 +9,38 @@
             <span class="badges">
                 <span class="badge badge-pill badge-light">System</span>
             </span>
-            <h3>{{selectedSystem.name}}</h3>
+            <h2>{{selectedSystem.name}}</h2>
             <div class="id-display">
                 <span class="label">Id:</span>&nbsp;<span class="id">{{selectedSystem.id}}</span>
             </div>
 
             <p>{{selectedSystem.description}}</p>
+
+            <div *ngIf="selectedSystemSystems.length > 0">
+                <br>
+                <h4>Systems</h4>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action"
+                       *ngFor="let system of selectedSystemSystems"
+                       (click)="selectSystem(system.id)">
+                        <h5 class="mb-1">{{ system.name }}</h5>
+                        <p class="mb-1" *ngIf="system.description">{{ system.description }}</p>
+                    </a>
+                </div>
+            </div>
+
+            <div *ngIf="selectedSystemSubsystems.length > 0">
+                <br>
+                <h4>Subsystems</h4>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action"
+                       *ngFor="let subsystem of selectedSystemSubsystems"
+                       (click)="selectSubsystem(subsystem.id)">
+                        <h5 class="mb-1">{{ subsystem.name }}</h5>
+                        <p class="mb-1" *ngIf="subsystem.description">{{ subsystem.description }}</p>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -22,7 +48,7 @@
         <span class="badges">
             <span class="badge badge-pill badge-primary">Subsystem</span>
         </span>
-        <h3>{{selectedSubsystem.name}}</h3>
+        <h2>{{selectedSubsystem.name}}</h2>
         <div class="id-display">
             <span class="label">Id:</span>&nbsp;<span class="id">{{selectedSubsystem.id}}</span>
         </div>
@@ -30,7 +56,7 @@
 
         <div *ngIf="selectedSubsystem.dependencies.length > 0">
             <br>
-            <h6>It requires :</h6>
+            <h4>Dependencies</h4>
             <div class="list-group">
                 <a href="#" class="list-group-item list-group-item-action"
                    *ngFor="let dep of selectedSubsystem.dependencies"
@@ -43,15 +69,23 @@
     </div>
 
     <div *ngIf="!selectedSystem && !selectedSubsystem">
-        <h2>Subsystems</h2>
-        <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action"
-               *ngFor="let subsystem of graph.subsystems"
-               (click)="selectSubsystem(subsystem.id)">
-                <h5 class="mb-1">{{ subsystem.name }}</h5>
-                <p class="mb-1">{{ subsystem.description }}</p>
-            </a>
+        <div class="card" *ngFor="let system of getSystemsWithParent(undefined)" (click)="selectSystem(system.id)">
+            <div class="card-body">
+                <h5 class="card-title">{{ system.name }}</h5>
+                <p class="card-text">{{ system.description }}</p>
+            </div>
         </div>
+
+<!--        &lt;!&ndash; This will be used for the search &ndash;&gt;-->
+<!--        <h2>Subsystems</h2>-->
+<!--        <div class="list-group">-->
+<!--            <a href="#" class="list-group-item list-group-item-action"-->
+<!--               *ngFor="let subsystem of graph.subsystems"-->
+<!--               (click)="selectSubsystem(subsystem.id)">-->
+<!--                <h5 class="mb-1">{{ subsystem.name }}</h5>-->
+<!--                <p class="mb-1">{{ subsystem.description }}</p>-->
+<!--            </a>-->
+<!--        </div>-->
     </div>
 </div>
 

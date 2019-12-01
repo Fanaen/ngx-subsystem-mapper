@@ -1,0 +1,46 @@
+[system]
+id = "ngx_subsystem_mapper"
+name = "Subsystems mapper front-end"
+description = "An Angular app which display the map and allows to explore it."
+
+[[subsystem]]
+id = "graph_updater"
+name = "Graph updater"
+description = "Make sure the data on the map is up-to-date."
+
+    [[subsystem.dependency]]
+    id = "subsystem_mapper_server"
+    why = "To get the data"
+
+[[subsystem]]
+id = "selector"
+name = "Selector"
+description = "Service retaining which system/subsystem is selected."
+
+
+[[subsystem]]
+id = "map_display"
+name = "Map display"
+description = "UI displaying the SVG with pan and zoom"
+
+    [[subsystem.dependency]]
+    id = "graph_updater"
+    why = "To get the latest version of the data"
+
+    [[subsystem.dependency]]
+    id = "selector"
+    why = "To react to when an item is selected and to select one when the user clicks on it on the graph"
+
+
+[[subsystem]]
+id = "inspector"
+name = "Inspector"
+description = "UI displaying the details about currently selected item."
+
+    [[subsystem.dependency]]
+    id = "graph_updater"
+    why = "To get the latest version of the data"
+
+    [[subsystem.dependency]]
+    id = "selector"
+    why = "To react to when an item is selected and to select one when the user clicks on it on the graph"
