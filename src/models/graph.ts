@@ -3,6 +3,11 @@ export interface ReferenceByIndex {
     index: number,
 }
 
+interface HowTo {
+    url: string,
+    text: string,
+}
+
 export interface System {
     id: string,
     name: string,
@@ -11,6 +16,8 @@ export interface System {
     description?: string,
 
     parent_system?: ReferenceByIndex, // <System>
+
+    how_to: HowTo[],
 }
 
 export interface Subsystem {
@@ -23,6 +30,7 @@ export interface Subsystem {
     parent_system?: ReferenceByIndex, // <System>
 
     dependencies: SubsystemDependency[],
+    how_to: HowTo[],
 }
 
 export interface SubsystemDependency {

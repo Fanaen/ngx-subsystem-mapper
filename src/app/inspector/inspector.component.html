@@ -22,6 +22,16 @@
             </div>
             <p>{{selectedSystem.description}}</p>
 
+            <div *ngIf="selectedSystem.how_to.length > 0">
+                <br>
+                <h4>Related "how-to"</h4>
+                <ul class="how-to">
+                    <li *ngFor="let howTo of selectedSystem.how_to">
+                        <a [href]="howTo.url" target="_blank" rel="noopener">{{ howTo.text }}</a>
+                    </li>
+                </ul>
+            </div>
+
             <div *ngIf="selectedSystemSystems.length > 0">
                 <br>
                 <h4>Systems</h4>
@@ -62,8 +72,17 @@
         </div>
         <p>{{selectedSubsystem.description}}</p>
 
-        <div *ngIf="selectedSubsystem.dependencies.length > 0">
+        <div *ngIf="selectedSubsystem.how_to.length > 0">
             <br>
+            <h4>Related "how-to"</h4>
+            <ul class="how-to">
+                <li *ngFor="let howTo of selectedSubsystem.how_to">
+                    <a [href]="howTo.url" target="_blank" rel="noopener">{{ howTo.text }}</a>
+                </li>
+            </ul>
+        </div>
+
+        <div *ngIf="selectedSubsystem.dependencies.length > 0">
             <h4>Dependencies</h4>
             <div class="list-group">
                 <a href="#" class="list-group-item list-group-item-action"
