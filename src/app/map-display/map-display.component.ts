@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, View
 import * as SvgPanZoom from "svg-pan-zoom";
 import { ObjectType, SelectionReference, SelectorService } from '../selector.service';
 import { GraphUpdaterService } from '../graph-updater.service';
+import { Subsystem } from '../../models';
 
 /// We want the <svg> to take all the space available.
 const SVGElementStyle = 'width:100%;height:100%;position:absolute;top:0;left:0;bottom:0;right:0;';
@@ -51,6 +52,9 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
                     case ObjectType.Subsystem:
                         const subsystem = document.getElementById(`subsystem_${this.lastSelection.id}`);
                         if (subsystem) subsystem.setAttribute('class', 'node');
+
+                        // Handle links
+                        this.setDependenciesClass(this.lastSelection, 'edge');
                         break;
                 }
             }
@@ -65,6 +69,9 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
                     case ObjectType.Subsystem:
                         const subsystem = document.getElementById(`subsystem_${selected.id}`);
                         if (subsystem) subsystem.setAttribute('class', 'node selected');
+
+                        // Handle links
+                        this.setDependenciesClass(selected, 'edge selected');
                         break;
                 }
             }
@@ -140,5 +147,19 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
         }
 
         return null;
+    }
+
+    /**
+     * (De)activate the links around a subsystem
+     */
+    private setDependenciesClass(selection: SelectionReference, className: string) {
+        const lastSubsystem = <Subsystem>this.graphUpdater.getFromSelection(selection);
+        if (lastSubsystem && lastSubsystem.dependencies) {
+            for (const dep of lastSubsystem.dependencies) {
+                const edgeId = `${lastSubsystem.id}_to_${dep.subsystem.id}`;
+                const edge = document.getElementById(edgeId);
+                if (edge) edge.setAttribute('class', className);
+            }
+        }
     }
 }

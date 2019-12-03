@@ -47,3 +47,20 @@
         fill: $hover-color;
     }
 }
+
+.edge {
+    polygon, path {
+        opacity: 0.1;
+    }
+
+    &.selected polygon {
+        opacity: 1;
+        stroke: $selected-color;
+        fill: $selected-color;
+    }
+
+    &.selected path {
+        opacity: 1;
+        stroke: $selected-color;
+    }
+}
