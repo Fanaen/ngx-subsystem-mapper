@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GraphUpdaterService } from './graph-updater.service';
 import { SearchService } from './search.service';
 import { SelectorService } from './selector.service';
 
@@ -8,7 +9,11 @@ import { SelectorService } from './selector.service';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    constructor(private searchService: SearchService, private selector: SelectorService) {}
+    public toolVersion: string;
+    constructor(private searchService: SearchService, private selector: SelectorService, graphUpdater: GraphUpdaterService) {
+        // Get the version of the tool to display
+        graphUpdater.graph.subscribe(g => this.toolVersion = g.tool_version);
+    }
 
     search($event: Event) {
         const q = ($event.target as HTMLInputElement).value;
