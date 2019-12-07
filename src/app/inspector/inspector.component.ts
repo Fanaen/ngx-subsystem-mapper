@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { SearchableObject, SearchService } from '../search.service';
 import { ObjectType, SelectionReference, SelectorService } from '../selector.service';
 import { Graph, ReferenceByIndex, Subsystem, System } from '../../models';
 import { GraphUpdaterService } from '../graph-updater.service';
 
 interface BreadcrumbItem extends SelectionReference {
-    name: String;
+    name: string;
     last?: boolean;
 }
 
@@ -20,6 +21,8 @@ export class InspectorComponent implements OnInit {
         systems: []
     };
 
+    public ObjectType = ObjectType;
+
     // -- To diplay --
     // 1. for the current system
     public selectedSystem: System;
@@ -30,8 +33,11 @@ export class InspectorComponent implements OnInit {
     // 3. for both
     private selected: SelectionReference;
     public breadcrumb: BreadcrumbItem[];
+    // 4. searches
+    public isSearching: boolean;
+    public searchResults: SearchableObject[] = [];
 
-    constructor(private graphUpdater: GraphUpdaterService, private selector: SelectorService) {
+    constructor(private graphUpdater: GraphUpdaterService, private selector: SelectorService, private searchService: SearchService) {
     }
 
     ngOnInit() {
@@ -58,12 +64,15 @@ export class InspectorComponent implements OnInit {
                         this.selectedSystem = null;
                         this.selectedSystemSystems = null;
                         this.selectedSystemSubsystems = null;
-                        this.selectedSubsystem = this.graph.subsystems.find(s => s.id == selected.id);
+                        this.selectedSubsystem = this.graph.subsystems.find(s => s.id === selected.id);
                         break;
                 }
             }
 
-            this.updateBreadcrumb()
+            this.searchService.isSearching.subscribe(isSearching => this.isSearching = isSearching);
+            this.searchService.searchResults.subscribe(searchResults => this.searchResults = searchResults);
+
+            this.updateBreadcrumb();
         });
     }
 
@@ -75,8 +84,8 @@ export class InspectorComponent implements OnInit {
         this.selector.selectSystem(id);
     }
 
-    public select(selection: SelectionReference) {
-        this.selector.select(selection);
+    public select(selection: SelectionReference | SearchableObject) {
+        this.selector.select(selection as SelectionReference);
     }
 
     getSubsystem(subsystem: ReferenceByIndex): Subsystem {
@@ -84,19 +93,17 @@ export class InspectorComponent implements OnInit {
     }
 
     getSystemsWithParent(index: number | undefined): System[] {
-        if (typeof index == 'number') {
-            return this.graph.systems.filter(s => s.parent_system && s.parent_system.index == index);
-        }
-        else {
+        if (typeof index === 'number') {
+            return this.graph.systems.filter(s => s.parent_system && s.parent_system.index === index);
+        } else {
             return this.graph.systems.filter(s => !s.parent_system);
         }
     }
 
     getSubsystemsWithParent(index: number | undefined): System[] {
-        if (typeof index == 'number') {
-            return this.graph.subsystems.filter(s => s.parent_system && s.parent_system.index == index);
-        }
-        else {
+        if (typeof index === 'number') {
+            return this.graph.subsystems.filter(s => s.parent_system && s.parent_system.index === index);
+        } else {
             return this.graph.subsystems.filter(s => !s.parent_system);
         }
     }
@@ -104,7 +111,7 @@ export class InspectorComponent implements OnInit {
     private findSystem(id: string) {
         const list =  this.graph.systems;
         for (let i = 0; i < list.length; i++) {
-            if (list[i].id == id) {
+            if (list[i].id === id) {
                 return { system: list[i], index: i };
             }
         }
@@ -117,7 +124,7 @@ export class InspectorComponent implements OnInit {
             return;
         }
 
-        let breadcrumb: BreadcrumbItem[] = this.selectedSubsystem
+        const breadcrumb: BreadcrumbItem[] = this.selectedSubsystem
             ? [{ ...this.selected, name: this.selectedSubsystem.name }]
             : [{ ...this.selected, name: this.selectedSystem.name }];
 

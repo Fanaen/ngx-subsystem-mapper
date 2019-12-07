@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subsystem, System } from '../models';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export enum ObjectType {
@@ -8,8 +7,8 @@ export enum ObjectType {
 }
 
 export interface SelectionReference {
-    id: string,
-    type: ObjectType,
+    id: string;
+    type: ObjectType;
 }
 
 @Injectable({
@@ -36,14 +35,14 @@ export class SelectorService {
     public selectSystem(id: string) {
         this.selectedSubject.next({
             type: ObjectType.System,
-            id: id,
+            id,
         });
     }
 
     public selectSubsystem(id: string) {
         this.selectedSubject.next({
             type: ObjectType.Subsystem,
-            id: id,
+            id,
         });
     }
 
@@ -56,8 +55,8 @@ export class SelectorService {
 
         // Neither should be null, same type and id
         return analysedSelection && currentSelection
-            && analysedSelection.type == currentSelection.type
-            && analysedSelection.id == currentSelection.id;
+            && analysedSelection.type === currentSelection.type
+            && analysedSelection.id === currentSelection.id;
 
     }
 }

@@ -1,4 +1,5 @@
-<div class="inspector">
+<div class="inspector" *ngIf="!isSearching || (selectedSystem || selectedSubsystem)">
+    <button *ngIf="isSearching" type="button" class="btn btn-sm btn-primary float-right" (click)="select(null)">Return to search</button>
     <nav aria-label="breadcrumb" *ngIf="selectedSystem || selectedSubsystem">
         <div class="custom-breadcrumb">
             <span class="custom-breadcrumb-item" aria-current="page"
@@ -102,17 +103,31 @@
                 <p class="card-text">{{ system.description }}</p>
             </div>
         </div>
-
-<!--        &lt;!&ndash; This will be used for the search &ndash;&gt;-->
-<!--        <h2>Subsystems</h2>-->
-<!--        <div class="list-group">-->
-<!--            <a href="#" class="list-group-item list-group-item-action"-->
-<!--               *ngFor="let subsystem of graph.subsystems"-->
-<!--               (click)="selectSubsystem(subsystem.id)">-->
-<!--                <h5 class="mb-1">{{ subsystem.name }}</h5>-->
-<!--                <p class="mb-1">{{ subsystem.description }}</p>-->
-<!--            </a>-->
-<!--        </div>-->
     </div>
+</div>
+<div class="inspector" *ngIf="isSearching">
+    <table class="table table-hover table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Type</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of searchResults"
+            (click)="select(item)">
+            <td>
+                <span class="badge badge-pill badge-light" *ngIf="item.type == ObjectType.System">System</span>
+                <span class="badge badge-pill badge-primary" *ngIf="item.type == ObjectType.Subsystem">Subsystem</span>
+            </td>
+            <td [innerHTML]="item.name"></td>
+            <td [innerHTML]="item.description"></td>
+        </tr>
+        <tr *ngIf="searchResults.length == 0" class="no-item">
+            <td class="table-warning" colspan="4"><strong>No result, sorry !</strong></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 

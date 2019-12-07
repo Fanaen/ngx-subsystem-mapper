@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Graph } from '../models';
-import { GraphUpdaterService } from './graph-updater.service';
+import { Component } from '@angular/core';
+import { SearchService } from './search.service';
 import { SelectorService } from './selector.service';
 
 @Component({
@@ -10,5 +8,15 @@ import { SelectorService } from './selector.service';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    constructor() {}
+    constructor(private searchService: SearchService, private selector: SelectorService) {}
+
+    search($event: Event) {
+        const q = ($event.target as HTMLInputElement).value;
+        this.searchService.search(q);
+
+        // If we start a new search, unselect everything
+        if (q && q.length) {
+            this.selector.unselect();
+        }
+    }
 }

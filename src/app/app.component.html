@@ -4,9 +4,8 @@
     </div>
     <div class="col-md-4 sidebar">
         <div class="search">
-            <form>
-                <input type="text" class="form-control" id="search" placeholder="[Unimplemented] Search for a subsystem...">
-            </form>
+            <input type="text" class="form-control" id="search" placeholder="Search for a subsystem..."
+                (keyup)="search($event);">
         </div>
         <div class="scroll-view">
             <app-inspector></app-inspector>

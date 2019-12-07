@@ -53,3 +53,9 @@ html, body, .fill {
 text {
     fill: #333333;
 }
+
+// Highlight the search
+.hl {
+    background-color: $highlight-color;
+}
+

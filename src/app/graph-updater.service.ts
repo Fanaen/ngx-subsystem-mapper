@@ -13,7 +13,7 @@ export class GraphUpdaterService {
         systems: [],
         subsystems: []
     });
-    private svgSubject: BehaviorSubject<string> = new BehaviorSubject<string>("");
+    private svgSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
     constructor(private http: HttpClient) {
         // SVG
@@ -41,9 +41,9 @@ export class GraphUpdaterService {
         } else {
             switch (selection.type) {
                 case ObjectType.System:
-                    return this.graphSubject.getValue().systems.find(s => s.id == selection.id);
+                    return this.graphSubject.getValue().systems.find(s => s.id === selection.id);
                 case ObjectType.Subsystem:
-                    return this.graphSubject.getValue().subsystems.find(s => s.id == selection.id);
+                    return this.graphSubject.getValue().subsystems.find(s => s.id === selection.id);
                 default:
                     return undefined;
             }
