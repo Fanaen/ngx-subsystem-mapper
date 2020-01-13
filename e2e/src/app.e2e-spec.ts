@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('ngx-subsystem-mapper app is running!');
+    expect(page.getTitleText()).toEqual('ngx-siostam app is running!');
   });
 
   afterEach(async () => {

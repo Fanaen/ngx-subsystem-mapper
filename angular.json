@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-subsystem-mapper": {
+    "ngx-siostam": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngx-subsystem-mapper",
+            "outputPath": "dist/ngx-siostam",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngx-subsystem-mapper:build"
+            "browserTarget": "ngx-siostam:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngx-subsystem-mapper:build:production"
+              "browserTarget": "ngx-siostam:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-subsystem-mapper:build"
+            "browserTarget": "ngx-siostam:build"
           }
         },
         "test": {
@@ -115,15 +115,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ngx-subsystem-mapper:serve"
+            "devServerTarget": "ngx-siostam:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ngx-subsystem-mapper:serve:production"
+              "devServerTarget": "ngx-siostam:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "ngx-subsystem-mapper"
+  "defaultProject": "ngx-siostam"
 }

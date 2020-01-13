@@ -1,6 +1,6 @@
 [system]
-id = "ngx_subsystem_mapper"
-name = "Subsystems mapper front-end"
+id = "ngx_siostam"
+name = "Siostam front-end"
 description = "An Angular app which display the map and allows to explore it."
 
 [[subsystem]]
@@ -9,7 +9,7 @@ name = "Graph updater"
 description = "Make sure the data on the map is up-to-date."
 
     [[subsystem.dependency]]
-    id = "subsystem_mapper_server"
+    id = "siostam_server"
     why = "To get the data"
 
 [[subsystem]]
