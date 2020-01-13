@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import * as SvgPanZoom from "svg-pan-zoom";
+import * as SvgPanZoom from 'svg-pan-zoom';
 import { ObjectType, SelectionReference, SelectorService } from '../selector.service';
 import { GraphUpdaterService } from '../graph-updater.service';
 import { Subsystem } from '../../models';
@@ -13,6 +13,8 @@ const SVGElementStyle = 'width:100%;height:100%;position:absolute;top:0;left:0;b
     styleUrls: ['./map-display.component.scss']
 })
 export class MapDisplayComponent implements OnInit, AfterViewInit {
+
+    constructor(private graphUpdater: GraphUpdaterService, private selector: SelectorService) {}
     @ViewChild('svgContainer', { static: true })
     svgContainer: ElementRef;
     svgElement: SVGSVGElement;
@@ -21,14 +23,43 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
     lastSelection: SelectionReference;
     isReady = false;
 
+    /**
+     * The parent of the polygon or the text is the <svg:g> with the id. We want it.
+     * Move upwards in the hierarchy to find it.
+     * @param target The clicked SVG element
+     */
+    private static searchParentsForSubsystem(target: HTMLElement): SelectionReference {
+        if (!target) {
+            return null;
+        }
+
+        while (target.parentElement) {
+            target = target.parentElement;
+            const id = target.id;
+            if (!id) {
+                // Ignore this
+            } else if (id.startsWith('system_')) {
+                return {
+                    type: ObjectType.System,
+                    id: id.substr(7),
+                };
+            } else if (id.startsWith('subsystem_')) {
+                return {
+                    type: ObjectType.Subsystem,
+                    id: id.substr(10),
+                };
+            }
+        }
+
+        return null;
+    }
+
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {
         if (this.svgPanZoom) {
             this.svgPanZoom.resize();
         }
     }
-
-    constructor(private graphUpdater: GraphUpdaterService, private selector: SelectorService) {}
 
     ngOnInit(): void {
         // Get the data from the server
@@ -47,11 +78,15 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
                 switch (this.lastSelection.type) {
                     case ObjectType.System:
                         const system = document.getElementById(`system_${this.lastSelection.id}`);
-                        if (system) system.setAttribute('class', 'cluster');
+                        if (system) {
+                            system.setAttribute('class', 'cluster');
+                        }
                         break;
                     case ObjectType.Subsystem:
                         const subsystem = document.getElementById(`subsystem_${this.lastSelection.id}`);
-                        if (subsystem) subsystem.setAttribute('class', 'node');
+                        if (subsystem) {
+                            subsystem.setAttribute('class', 'node');
+                        }
 
                         // Handle links
                         this.setDependenciesClass(this.lastSelection, 'edge');
@@ -64,11 +99,15 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
                 switch (selected.type) {
                     case ObjectType.System:
                         const system = document.getElementById(`system_${selected.id}`);
-                        if (system) system.setAttribute('class', 'cluster selected');
+                        if (system) {
+                            system.setAttribute('class', 'cluster selected');
+                        }
                         break;
                     case ObjectType.Subsystem:
                         const subsystem = document.getElementById(`subsystem_${selected.id}`);
-                        if (subsystem) subsystem.setAttribute('class', 'node selected');
+                        if (subsystem) {
+                            subsystem.setAttribute('class', 'node selected');
+                        }
 
                         // Handle links
                         this.setDependenciesClass(selected, 'edge selected');
@@ -91,7 +130,6 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
     /**
      * Clicking on a unselected item selects it
      * Clicking on a selected item unselect it
-     * @param event
      */
     public onClick(event: any) {
         const possibleSelection = MapDisplayComponent.searchParentsForSubsystem(event.target);
@@ -119,46 +157,15 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
     }
 
     /**
-     * The parent of the polygon or the text is the <svg:g> with the id. We want it.
-     * Move upwards in the hierarchy to find it.
-     * @param target The clicked SVG element
-     */
-    private static searchParentsForSubsystem(target: HTMLElement): SelectionReference {
-        if (!target) {
-            return null;
-        }
-
-        while (target.parentElement) {
-            target = target.parentElement;
-            const id = target.id;
-            if (!id) {
-                // Ignore this
-            } else if (id.startsWith("system_")) {
-                return {
-                    type: ObjectType.System,
-                    id: id.substr(7),
-                };
-            } else if (id.startsWith("subsystem_")) {
-                return {
-                    type: ObjectType.Subsystem,
-                    id: id.substr(10),
-                };
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * (De)activate the links around a subsystem
      */
     private setDependenciesClass(selection: SelectionReference, className: string) {
-        const lastSubsystem = <Subsystem>this.graphUpdater.getFromSelection(selection);
+        const lastSubsystem = this.graphUpdater.getFromSelection(selection) as Subsystem;
         if (lastSubsystem && lastSubsystem.dependencies) {
             for (const dep of lastSubsystem.dependencies) {
                 const edgeId = `${lastSubsystem.id}_to_${dep.subsystem.id}`;
                 const edge = document.getElementById(edgeId);
-                if (edge) edge.setAttribute('class', className);
+                if (edge) { edge.setAttribute('class', className); }
             }
         }
     }
