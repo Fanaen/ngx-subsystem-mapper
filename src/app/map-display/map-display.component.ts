@@ -69,51 +69,18 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
 
             // Init svg-pan-zoom. There is a safety to avoid svg-pan-zoom to be loaded before the UI.
             this.update();
+
+            // Reactivate the selection
+            this.addSelectedClass(this.lastSelection);
         });
 
         // Observe the selection
         this.selector.selected.subscribe(selected => {
             // Disable the last selection
-            if (this.lastSelection) {
-                switch (this.lastSelection.type) {
-                    case ObjectType.System:
-                        const system = document.getElementById(`system_${this.lastSelection.id}`);
-                        if (system) {
-                            system.setAttribute('class', 'cluster');
-                        }
-                        break;
-                    case ObjectType.Subsystem:
-                        const subsystem = document.getElementById(`subsystem_${this.lastSelection.id}`);
-                        if (subsystem) {
-                            subsystem.setAttribute('class', 'node');
-                        }
-
-                        // Handle links
-                        this.setDependenciesClass(this.lastSelection, 'edge');
-                        break;
-                }
-            }
+            this.removeSelectedClass(this.lastSelection);
 
             // Activate the new one
-            if (selected) {
-                switch (selected.type) {
-                    case ObjectType.System:
-                        const system = document.getElementById(`system_${selected.id}`);
-                        if (system) {
-                            system.setAttribute('class', 'cluster selected');
-                        }
-                        break;
-                    case ObjectType.Subsystem:
-                        const subsystem = document.getElementById(`subsystem_${selected.id}`);
-                        if (subsystem) {
-                            subsystem.setAttribute('class', 'node selected');
-                        }
-
-                        // Handle links
-                        this.setDependenciesClass(selected, 'edge selected');
-                        break;
-                }
-            }
+            this.addSelectedClass(selected);
 
             // Store the selection to disable it later
             this.lastSelection = selected;
@@ -166,6 +133,57 @@ export class MapDisplayComponent implements OnInit, AfterViewInit {
                 const edgeId = `${lastSubsystem.id}_to_${dep.subsystem.id}`;
                 const edge = document.getElementById(edgeId);
                 if (edge) { edge.setAttribute('class', className); }
+            }
+        }
+    }
+
+    /**
+     * Used to apply new selection
+     * @param selected
+     */
+    private addSelectedClass(selected: SelectionReference) {
+        if (selected) {
+            switch (selected.type) {
+                case ObjectType.System:
+                    const system = document.getElementById(`system_${selected.id}`);
+                    if (system) {
+                        system.setAttribute('class', 'cluster selected');
+                    }
+                    break;
+                case ObjectType.Subsystem:
+                    const subsystem = document.getElementById(`subsystem_${selected.id}`);
+                    if (subsystem) {
+                        subsystem.setAttribute('class', 'node selected');
+                    }
+
+                    // Handle links
+                    this.setDependenciesClass(selected, 'edge selected');
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Used to disable last selection
+     */
+    private removeSelectedClass(selected: SelectionReference) {
+        if (selected) {
+            switch (selected.type) {
+                case ObjectType.System:
+                    const system = document.getElementById(`system_${this.lastSelection.id}`);
+                    if (system) {
+                        system.setAttribute('class', 'cluster');
+                    }
+                    break;
+                case ObjectType.Subsystem:
+                    const subsystem = document.getElementById(`subsystem_${this.lastSelection.id}`);
+                    if (subsystem) {
+                        subsystem.setAttribute('class', 'node');
+                    }
+
+                    // Handle links
+                    this.setDependenciesClass(this.lastSelection, 'edge');
+                    break;
             }
         }
     }

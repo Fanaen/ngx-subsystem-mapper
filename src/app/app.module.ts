@@ -7,6 +7,9 @@ import { AppComponent } from './app.component';
 import { MapDisplayComponent } from './map-display/map-display.component';
 import { InspectorComponent } from './inspector/inspector.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -17,6 +20,10 @@ import { InspectorComponent } from './inspector/inspector.component';
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
+
+        // For the toasts
+        BrowserAnimationsModule, // required animations module
+        ToastrModule.forRoot() // ToastrModule added
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -41,7 +41,12 @@ export class InspectorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.graphUpdater.graph.subscribe(graph => this.graph = graph);
+        this.graphUpdater.graph.subscribe(graph => {
+            this.graph = graph;
+
+            // Reselect
+            this.selector.select(this.selected);
+        });
 
         this.selector.selected.subscribe(selected => {
             this.selected = selected;

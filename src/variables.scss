@@ -4,6 +4,15 @@ $hover-color: #0080c7;
 $highlight-color: rgba(0, 128, 199, 0.4);
 $selected-color: #eb5c00;
 
-$theme-colors: (
-    "primary": $selected-color
-);
+$primary:       $selected-color !default;
+//$secondary:     $gray-600 !default;
+//$success:       $green !default;
+//$info:          $cyan !default;
+//$warning:       $yellow !default;
+//$danger:        $red !default;
+//$light:         $gray-100 !default;
+//$dark:          $gray-800 !default;
+
+//$theme-colors: (
+//    "primary": $selected-color
+//);

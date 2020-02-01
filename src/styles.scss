@@ -43,6 +43,8 @@
 
 @import "graph.styles";
 
+@import "node_modules/ngx-toastr/toastr-bs4-alert";
+
 // -- Utilities --
 html, body, .fill {
     min-height: 100%;
